@@ -16,7 +16,6 @@ class MultipleLinearRegression:
 
         for _ in range(self.__n_iters):
             y_pred = np.dot(X, self._coeff) + self._inter
-            print(y_pred)
 
             dc = (1/n_samples) * np.dot(X.T, (y_pred - y))
             di = (1/n_samples) * np.sum(y_pred - y)
