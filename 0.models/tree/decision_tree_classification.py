@@ -26,9 +26,9 @@ class DecisionTreeClassifier:
 
     def fit(self, X: np.ndarray , y: np.ndarray):
         self._n_features = X.shape[1]
-        self._root = self.__grow_tree(X, y)
+        self._root = self.__build_tree(X, y)
 
-    def __grow_tree(self, X: np.ndarray, y: np.ndarray, *, depth = 0):
+    def __build_tree(self, X: np.ndarray, y: np.ndarray, *, depth = 0):
         n_labels = len(np.unique(y))
         n_samples, n_feats = X.shape
 
@@ -43,12 +43,12 @@ class DecisionTreeClassifier:
 
         # create children
         l_idxs, r_idxs = self.__split(X[:, best_feature], best_threshold)
-        left = self.__grow_tree(X[l_idxs, :], y[l_idxs], depth=depth+1)
-        right = self.__grow_tree(X[r_idxs, :], y[r_idxs], depth=depth+1)
+        left = self.__build_tree(X[l_idxs, :], y[l_idxs], depth=depth+1)
+        right = self.__build_tree(X[r_idxs, :], y[r_idxs], depth=depth+1)
         return DecisionTreeClassifier.Node(feature=best_feature, threshold=best_threshold, left=left, right=right)
 
     def __best_split(self, X: np.ndarray, y: np.ndarray, features: np.ndarray):
-        best_variance, best_feature, best_threshold = -1, None, None
+        best_info_gain, best_feature, best_threshold = -1, None, None
         parent_entropy = self.__entropy(y)
 
         for f in features:
@@ -56,16 +56,16 @@ class DecisionTreeClassifier:
             thresholds = np.unique(X_col)
 
             for t in thresholds:
-                curr_variance = self.__compute_variance(y, X_col, t, parent_entropy)
+                curr_info_gain = self.__get_information_gain(y, X_col, t, parent_entropy)
 
-                if (curr_variance > best_variance):
-                    best_variance = curr_variance
+                if (curr_info_gain > best_info_gain):
+                    best_info_gain = curr_info_gain
                     best_feature = f
                     best_threshold = t
 
         return best_feature, best_threshold
 
-    def __compute_variance(self, y: np.ndarray, X_col: np.ndarray, treshold, parent_entropy):
+    def __get_information_gain(self, y: np.ndarray, X_col: np.ndarray, treshold, parent_entropy):
         #create dummy children
         l_idxs, r_idxs = self.__split(X_col, treshold)
 
