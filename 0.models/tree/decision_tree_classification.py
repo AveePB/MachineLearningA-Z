@@ -1,7 +1,7 @@
 from collections import Counter
 import numpy as np
 
-class DecisionTreeClassification:
+class DecisionTreeClassifier:
 
     class Node:
 
@@ -34,7 +34,7 @@ class DecisionTreeClassification:
 
         # check stopping criteria
         if ((n_labels == 1) or (depth >= self._max_depth) or (n_samples < self._min_samples)):
-            return DecisionTreeClassification.Node(value=self.__most_common_label(y))
+            return DecisionTreeClassifier.Node(value=self.__most_common_label(y))
 
         features = np.random.choice(n_feats, self._n_features, replace = False)
 
@@ -45,7 +45,7 @@ class DecisionTreeClassification:
         l_idxs, r_idxs = self.__split(X[:, best_feature], best_threshold)
         left = self.__grow_tree(X[l_idxs, :], y[l_idxs], depth=depth+1)
         right = self.__grow_tree(X[r_idxs, :], y[r_idxs], depth=depth+1)
-        return DecisionTreeClassification.Node(feature=best_feature, threshold=best_threshold, left=left, right=right)
+        return DecisionTreeClassifier.Node(feature=best_feature, threshold=best_threshold, left=left, right=right)
 
     def __best_split(self, X: np.ndarray, y: np.ndarray, features: np.ndarray):
         best_variance, best_feature, best_threshold = -1, None, None

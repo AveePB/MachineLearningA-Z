@@ -1,6 +1,6 @@
 import numpy as np
 
-class MultipleLinearRegression:
+class MultipleLinearRegressor:
 
     def __init__(self, lr = 0.001, n_iters = 1000):
         self.__lr = lr
