@@ -1,4 +1,4 @@
-from tree.decision_tree_classification import DecisionTreeClassifier
+from tree.decision_tree import DecisionTreeClassifier
 from collections import Counter
 import numpy as np
 
