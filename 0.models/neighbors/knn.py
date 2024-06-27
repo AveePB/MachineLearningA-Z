@@ -29,8 +29,5 @@ class KNNClassifier:
         # majority vote
         return self.__most_common_label(neighbor_labels)
 
-    def __euclidean_distance(self, x1: np.ndarray, x2: np.ndarray):
-        return np.sqrt(np.sum((x1 - x2)**2))
-
     def __most_common_label(self, y: np.ndarray):
         return Counter(y).most_common(1)[0][0]
